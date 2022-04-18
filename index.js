@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose')
 
+app.use(express.json()) 
+
 const DB_URL = 'mongodb+srv://ChessRoot:7Ms7nOs1UGliAC4a@cluster0.rhguy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 async function startApp() {
@@ -16,9 +18,9 @@ async function startApp() {
     }
 }
 
- 
-app.use('/api/auth', require('./routers/authRouter'));
 
+
+app.use('/api/auth', require('./routers/authRouter'));
 
 app.use('/', express.static(path.join(__dirname, 'client', 'build')))
 app.get('*', (req, res) => {
