@@ -46,7 +46,6 @@ class autController {
         } catch(e) {
          res.status(400).json({message: 'Login error'})  
         }
-
     }
 
     async getUsers(req, res) {
