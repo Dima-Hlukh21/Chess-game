@@ -1,6 +1,5 @@
-import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-
+import { useForm } from "react-hook-form";
 
 
 
@@ -12,12 +11,12 @@ const useStyles = makeStyles((theme) => ({
     },
     button__login: {
     backgroundColor: '#FFF',
-    color: '#fff',
     padding: '10px 172pX',
     marginTop: '25px',
     border: 'none',
     color: '#000',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    display: 'block',
     },
     container: {
         marginLeft: '740px',
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
         width: '400px',
         padding: '15px 30PX',
         backgroundColor: '#FFF',
-        color:'aliceblue',
         marginTop: '5px',
         border: '0px',
         color: '#000',
@@ -54,20 +52,34 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login () {
     const classes = useStyles();
+    const { register, handleSubmit, } = useForm();
+    const onSubmit = data =>
+     console.log(data);
+     
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', "http://localhost:10000/user/login/");
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+  
+
+  xhr.send(onSubmit);
+    
+   
   return (
     <div className={classes.container}>
-    <div className={classes.login__container}>
-    <form>
-         <h2 className={classes.login__text}>Username</h2>
-         <input className={classes.dataIn} name="email" type="email" placeholder="Email" />
+        <div className={classes.login__container}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <h2 className={classes.login__text}>Username</h2>
+            <input {...register('email')} className={classes.dataIn} name="email" type="email" placeholder="Email" />
     
     
-         <h2 className={classes.login__text}>Password </h2> 
-         <input className={classes.dataIn} name="password" type="password" placeholder="Password" />
+            <h2 className={classes.login__text}>Password </h2> 
+            <input {...register('password')} className={classes.dataIn} name="password" type="password" placeholder="Password" />
+            <button type="submit" className={classes.button__login}>Sign up</button >
+        </form>
+        
   
-   </form>
-   <button type="submit" className={classes.button__login}>Sign up</button >
-    </div>
+        </div>
     </div>
   );
 };
+
