@@ -53,8 +53,15 @@ const useStyles = makeStyles((theme) => ({
 export default function Login () {
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
-    const onSubmit = data => console.log(data);
+    const onSubmit = data =>
+     console.log(data);
+     
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', "http://localhost:10000/user/login/");
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
   
+
+  xhr.send(onSubmit);
     
    
   return (
