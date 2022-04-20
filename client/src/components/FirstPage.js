@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "react-hook-form";
-
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,28 +43,36 @@ const useStyles = makeStyles((theme) => ({
 },
     dataIn:{
         width: '400px',
-        padding: '15px 30PX',
+        padding: '15px ',
         backgroundColor: '#FFF',
         marginTop: '5px',
         border: '0px',
         color: '#000',
+        display: 'block',
+        boxSizing: 'border-box',
+    },
+    dataColor:{
+        width: '400px',
+        backgroundColor: '#FFF',
+        color: '#000',
+        display: 'block',
+        boxSizing: 'border-box',
+        marginTop: '15px',
+        height:'45px',
+        padding: '5px 15px '
+        
     }
    
         
 }));
 
-export default function Login () {
+export default function FirstPage () {
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
     const onSubmit = data =>
      console.log(data);
      
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', "http://localhost:10000/user/login/");
-  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
   
-
-  xhr.send(onSubmit);
     
    
   return (
@@ -69,12 +80,16 @@ export default function Login () {
         <div className={classes.login__container}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <h2 className={classes.login__text}>Username</h2>
-            <input {...register('email')} className={classes.dataIn} name="email" type="email" placeholder="Email" />
-    
-    
-            <h2 className={classes.login__text}>Password </h2> 
-            <input {...register('password')} className={classes.dataIn} name="password" type="password" placeholder="Password" />
-            <button type="submit" className={classes.button__login}>Sign up</button >
+            <input {...register('email')} className={classes.dataIn} name="userName" type="userName" placeholder="User Name" />
+            <FormControl>
+            <InputLabel  id="Color">Color</InputLabel>
+            <Select labelId="Color"    className={classes.dataColor}>
+                
+            <MenuItem value="10">White</MenuItem>
+            <MenuItem value="20">Black</MenuItem>
+            </Select>
+            </FormControl>
+            <button type="submit" className={classes.button__login}>Play</button >
         </form>
         
   
