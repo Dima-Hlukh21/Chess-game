@@ -12,6 +12,7 @@ authRouter.post('/register', [
    check('password', " Пароль должен быть больше 4 и меньше 12 символов").isLength({min:4, max:12})
 ],  controller.registration)
 
-authRouter.get('/users', authMiddleware, controller.getUsers)
+authRouter.get('/events')
+
 
 module.exports = authRouter

@@ -47,16 +47,5 @@ class autController {
          res.status(400).json({message: 'Login error'})  
         }
     }
-
-    async getUsers(req, res) {
-        try {
-            const users = await User.find()
-            res.json(users)
-        } catch(e) {
-            
-        }
-
-    }
-
 }
 module.exports = new autController()
