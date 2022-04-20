@@ -1,8 +1,8 @@
 import React from 'react';
-import Login from './components/login';
+import FirstPage from './components/FirstPage';
 function App() {
   return (
-    <Login/> 
+    <FirstPage/> 
   );
 }
 
