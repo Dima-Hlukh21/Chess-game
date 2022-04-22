@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "run build": "--prefix ./client"
+    "build": "--prefix ./client"
   },
   "keywords": [],
   "author": "",
