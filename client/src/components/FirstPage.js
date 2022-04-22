@@ -4,7 +4,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-
+import Connect from './Socket'
 
 const useStyles = makeStyles((theme) => ({
     login__text:{
@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
         
     },
     button__login: {
+    width: '400px',
     backgroundColor: '#FFF',
     padding: '10px 172pX',
     marginTop: '25px',
@@ -50,16 +51,16 @@ const useStyles = makeStyles((theme) => ({
         color: '#000',
         display: 'block',
         boxSizing: 'border-box',
+        marginBottom: '10px'
     },
     dataColor:{
         width: '400px',
         backgroundColor: '#FFF',
-        color: '#000',
         display: 'block',
         boxSizing: 'border-box',
-        marginTop: '15px',
+        marginTop: '25px',
         height:'45px',
-        padding: '5px 15px '
+        
         
     }
    
@@ -79,14 +80,15 @@ export default function FirstPage () {
     <div className={classes.container}>
         <div className={classes.login__container}>
         <form onSubmit={handleSubmit(onSubmit)}>
+            
             <h2 className={classes.login__text}>Username</h2>
-            <input {...register('email')} className={classes.dataIn} name="userName" type="userName" placeholder="User Name" />
+            <input {...register('userName')} className={classes.dataIn} name="userName" type="userName" placeholder="User Name" />
             <FormControl>
             <InputLabel  id="Color">Color</InputLabel>
-            <Select labelId="Color"    className={classes.dataColor}>
+            <Select color="black" variant="outlined"  labelId="color"  {...register('color')}  className={classes.dataColor}>
                 
-            <MenuItem value="10">White</MenuItem>
-            <MenuItem value="20">Black</MenuItem>
+            <MenuItem value="White">White</MenuItem>
+            <MenuItem value="Black">Black</MenuItem>
             </Select>
             </FormControl>
             <button type="submit" className={classes.button__login}>Play</button >
@@ -94,6 +96,7 @@ export default function FirstPage () {
         
   
         </div>
+        <Connect></Connect>
     </div>
   );
 };
