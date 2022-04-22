@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "concurrently \"npm i --prefix ./client\" \" npm i\"",
+    "preinstall": "npm i --prefix ./client",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "build": "npm run build --prefix ./client"
