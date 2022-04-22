@@ -28,9 +28,9 @@ const Game = new ChessGame()  // Головний об'єкт гри
 io.on('connection', socket =>{
     console.log('User connected')   
 
-    socket.on('start', () => {      
+    socket.on('start', (data) => {      
         if (Game.users[socket.id] !== undefined) return;    // Перевірка що гравець ще не в грі
-        Game.start(socket.id.toString(), (start, gameId, opponent) => {     
+        Game.start({ id: socket.id.toString(), ...data }, (start, gameId, opponent) => {     
             if (start) {                                    // Перевірка початку гри
                 socket.join(gameId)                         // Створення кімнати гри для гравців                      
                 io.in(opponent).socketsJoin(gameId)

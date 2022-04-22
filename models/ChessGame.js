@@ -4,27 +4,28 @@ const GameItem = require('./GameItem')
 module.exports = class ChessGame{
     constructor() {
         this.games = [];    // Масив створених ігор
-        this.users = [];    // Масив гравців в іграх
-        this.free = [];     // Черга гравців
+        this.users = [];    // Масив гравців
+        this.free = [];     // Черга
     }
-    start(user, callback) {
-        if (Object.keys(this.free).length > 0 && this.free[user] != true){      // Перевірка черги (чи є хтось в черзі і чи це той же гравець)
-            const opponent = Object.keys(this.free).shift();                    // Беремо опонента з черги
-            delete this.free[opponent];                                         // Видалення опонента з черги                   
-            const game = new GameItem(user, opponent)                           // Створюємо об'єкт гри
+    start(userData, callback) {
+        this.users[userData.id] = userData; 
+        const opponent = this.free.find( user => user.white != userData.white );
+
+        if (opponent){ 
+            this.free = this.free.filter((item) => item.id !== opponent.id);                                              
+            const game = new GameItem(userData.id, opponent.id)                           // Створюємо об'єкт гри
             const id = Date.now();
             this.games[id] = game
-            this.users[user] = id
-            this.users[opponent] = id
-            callback(true, id, opponent);                                       // Првернення данних з функії
-            console.log('user1: '+ user + ' user2: '+ opponent )
-        } else{
-            console.log('User add to quiue '+ user)
-            this.free[user] = true;
+            this.users[userData.id].game = id
+            this.users[opponent.id].game = id
+            callback(true, id, opponent.id);                                       // Првернення данних з функії
+            console.log('user1: '+ JSON.stringify(userData) + ' user2: '+ JSON.stringify(this.users[opponent.id]) )
+        } else{     
+            this.free.push({id: userData.id, white: userData.white });
+            console.log('User add to quiue '+ JSON.stringify( this.users[userData.id]))
             callback(false);
-        }
-        
-    }
+        }     
 
+    }
 
 }
