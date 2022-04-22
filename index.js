@@ -3,7 +3,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server,{ cors: { origin: '*' }});
 const path = require('path');
 const mongoose = require('mongoose')
-const ChessGame = require('./models/Game')
+const ChessGame = require('./models/ChessGame')
 
 
 app.use(require('express').json()) 
@@ -23,20 +23,22 @@ async function startApp() {
 }
 
 
-const games = [], Game = new ChessGame()
+const Game = new ChessGame()  // Головний об'єкт гри
 
 io.on('connection', socket =>{
-    console.log('User connected')
-    socket.on('searchGame', data =>{
-        games.push(data)
-        console.log(games)
-        socket.emit('onQuiue', {
-          })
-    })
-    socket.on('start', () => {
-        if (Game.users[socket.id] !== undefined) return;
-        Game.start(socket.id.toString(),() => {
-            
+    console.log('User connected')   
+
+    socket.on('start', () => {      
+        if (Game.users[socket.id] !== undefined) return;    // Перевірка що гравець ще не в грі
+        Game.start(socket.id.toString(), (start, gameId, opponent) => {     
+            if (start) {                                    // Перевірка початку гри
+                socket.join(gameId)                         // Створення кімнати гри для гравців                      
+                io.in(opponent).socketsJoin(gameId)
+                socket.emit('ready', gameId)                // Повідомлення гравців про початок
+                io.to(opponent).emit('ready', gameId)
+            } else {
+                io.to(socket.id).emit('wait')
+            }
         }) 
     })
 }) 
