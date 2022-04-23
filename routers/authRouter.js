@@ -1,8 +1,8 @@
-const { Router } = require('express')
-const controller = require('./authController')
-const {check} = require("express-validator")
+import { Router } from 'express';
+import { check } from 'express-validator';
+import controller from './authController.js';
+import authMiddleware from '../middlewaree/authMiddleware.js';
 const authRouter =  new Router()
-const authMiddleware = require('../middlewaree/authMiddleware')
 
 
 authRouter.post('/login', controller.login)
@@ -15,4 +15,4 @@ authRouter.post('/register', [
 authRouter.get('/events')
 
 
-module.exports = authRouter
+export default authRouter;

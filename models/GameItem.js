@@ -1,12 +1,15 @@
+import { Chess } from 'chess.js';
 
 
-
-module.exports = class GameItem{
+export default  class GameItem{
     constructor(user, opponent){
-        this.board = [];    // Доска
+        this.gameModule = new Chess();
         this.user = user;   //Гравець 1
         this.opponent = opponent;   //Гравець 2
         this.turn = 10; // 10-білі, 20-чорні
+    }
+    getBoard(){
+        return this.gameModule.board()
     }
     step(){
 
@@ -17,4 +20,5 @@ module.exports = class GameItem{
     checkWinner(){
         
     }
+
 }
