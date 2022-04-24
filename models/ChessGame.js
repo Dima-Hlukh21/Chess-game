@@ -1,7 +1,8 @@
-const GameItem = require('./GameItem')
+import  GameItem  from './GameItem.js'
 
 
-module.exports = class ChessGame{
+
+export default  class ChessGame{
     constructor() {
         this.games = [];    // Масив створених ігор
         this.users = [];    // Масив гравців
@@ -18,7 +19,7 @@ module.exports = class ChessGame{
             this.games[id] = game
             this.users[userData.id].game = id
             this.users[opponent.id].game = id
-            callback(true, id, opponent.id);                                       // Првернення данних з функії
+            callback(true, id, opponent.id, game.getBoard());                                       // Првернення данних з функії
             console.log('user1: '+ JSON.stringify(userData) + ' user2: '+ JSON.stringify(this.users[opponent.id]) )
         } else{     
             this.free.push({id: userData.id, white: userData.white });

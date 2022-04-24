@@ -1,7 +1,7 @@
-const User = require('../models/Users')
-const {validationResult} = require('express-validator')
-const jwt = require('jsonwebtoken')
-const {secret} = require("../config/config")
+import {validationResult} from 'express-validator'
+import jwt from 'jsonwebtoken'
+import User from '../models/Users.js'
+import {secret} from "../config/config.js"
 
 const generateAccessToken = (id)=>{
     const payload = {
@@ -48,4 +48,4 @@ class autController {
         }
     }
 }
-module.exports = new autController()
+export default new autController()
