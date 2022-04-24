@@ -4,8 +4,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Connect from './Socket'
-
+import {Connect, socket} from './Socket'
 const useStyles = makeStyles((theme) => ({
     login__text:{
         color: '#FFB138',
@@ -71,8 +70,15 @@ export default function FirstPage () {
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
     const onSubmit = data =>
-     console.log(data);
+    socket.send(data);
+    console.log('data send')
      
+     
+    
+        
+        
+        
+          
   
     
    
@@ -87,8 +93,8 @@ export default function FirstPage () {
             <InputLabel  id="Color">Color</InputLabel>
             <Select color="black" variant="outlined"  labelId="color"  {...register('color')}  className={classes.dataColor}>
                 
-            <MenuItem value="White">White</MenuItem>
-            <MenuItem value="Black">Black</MenuItem>
+            <MenuItem value="white">White</MenuItem>
+            <MenuItem value="black">Black</MenuItem>
             </Select>
             </FormControl>
             <button type="submit" className={classes.button__login}>Play</button >

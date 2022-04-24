@@ -5,10 +5,11 @@ import {SocketContext, socket} from './components/Socket';
 
 function App() {
   return (
-  
+    <SocketContext.Provider value={socket}>
 
     <FirstPage/> 
-   
+    </SocketContext.Provider>
+
   );
 }
 
