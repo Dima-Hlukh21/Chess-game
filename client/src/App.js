@@ -7,7 +7,8 @@ function App() {
   return (
     <SocketContext.Provider value={socket}>
 
-    <FirstPage/> 
+      <FirstPage/> 
+      
     </SocketContext.Provider>
 
   );

@@ -4,7 +4,9 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import {Connect, socket} from './Socket'
+import {SocketContext} from './Socket'
+import React, {useState, useContext, useCallback, useEffect} from 'react';
+
 const useStyles = makeStyles((theme) => ({
     login__text:{
         color: '#FFB138',
@@ -61,26 +63,25 @@ const useStyles = makeStyles((theme) => ({
         height:'45px',
         
         
-    }
-   
-        
+    }         
 }));
 
 export default function FirstPage () {
+
+    const socket = useContext(SocketContext);
+
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
-    const onSubmit = data =>
-    socket.send(data);
-    console.log('data send')
-     
-     
+
+    const onSubmit =  useCallback((data) => {
+        console.log(data)
+        socket.emit('start', {
+            user: data.userName,
+            white: data.white
+        })
+    }, []);    
     
-        
-        
-        
           
-  
-    
    
   return (
     <div className={classes.container}>
@@ -91,10 +92,10 @@ export default function FirstPage () {
             <input {...register('userName')} className={classes.dataIn} name="userName" type="userName" placeholder="User Name" />
             <FormControl>
             <InputLabel  id="Color">Color</InputLabel>
-            <Select color="black" variant="outlined"  labelId="color"  {...register('color')}  className={classes.dataColor}>
+            <Select color="black" variant="outlined"  labelId="color"  {...register('white')}  className={classes.dataColor}>
                 
-            <MenuItem value="white">White</MenuItem>
-            <MenuItem value="black">Black</MenuItem>
+            <MenuItem value="true">White</MenuItem>
+            <MenuItem value="false">Black</MenuItem>
             </Select>
             </FormControl>
             <button type="submit" className={classes.button__login}>Play</button >
@@ -102,7 +103,6 @@ export default function FirstPage () {
         
   
         </div>
-        <Connect></Connect>
     </div>
   );
 };
