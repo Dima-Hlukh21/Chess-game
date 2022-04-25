@@ -11,8 +11,14 @@ export default  class GameItem{
     getBoard(){
         return this.gameModule.board()
     }
-    step(){
-
+    step(from, to){
+        return this.gameModule.move({from,to})
+    }
+     getUserId(){
+         return this.user
+     }
+     getOpponentrId(){
+        return this.opponent
     }
     getTurn(){
 
