@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import {SocketContext} from './Socket'
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import CreateBord from './Board';
-import { socket } from './Socket';
 
 const useStyles = makeStyles((theme) => ({
     login__text:{
@@ -69,34 +68,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FirstPage () {
-
     const socket = useContext(SocketContext);
-
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
-
+    const {message, setMessage } = useState(false)
     const onSubmit =  useCallback((data) => {
         console.log(data)
         socket.emit('start', {
             user: data.userName,
             white: data.white
         })
-
-       
-
-
-
+        setMessage(true)
     }, []);    
     
           
-    useEffect(() => { 
-        socket.on ('ready', (data) => {
+    
+    
+        
+        useEffect(() => { 
             console.log('game start')
-        })
-     });
+              socket.on ('ready', (data) => {
+                console.log('game start2')
+              })
+           }, [message]);
+        
+          
 
   return (
     <div className={classes.container}>
+      
       
 
         <div className={classes.login__container}>
@@ -107,7 +107,7 @@ export default function FirstPage () {
             <FormControl>
             <InputLabel  id="Color">Color</InputLabel>
             <Select color="black" variant="outlined"  labelId="color"  {...register('white')}  className={classes.dataColor}>
-                
+            
             <MenuItem value="true">White</MenuItem>
             <MenuItem value="false">Black</MenuItem>
             </Select>
