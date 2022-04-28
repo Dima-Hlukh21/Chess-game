@@ -6,6 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import {SocketContext} from './Socket'
 import React, {useState, useContext, useCallback, useEffect} from 'react';
+import CreateBord from './Board';
+import { socket } from './Socket';
 
 const useStyles = makeStyles((theme) => ({
     login__text:{
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     '@global':{
         html: {
             overflow: 'scroll',
-            overflowY: 'hidden',
+            
             overflowX:'hidden',
             
              },
@@ -79,12 +81,24 @@ export default function FirstPage () {
             user: data.userName,
             white: data.white
         })
+
+       
+
+
+
     }, []);    
     
           
-   
+    useEffect(() => { 
+        socket.on ('ready', (data) => {
+            console.log('game start')
+        })
+     });
+
   return (
     <div className={classes.container}>
+      
+
         <div className={classes.login__container}>
         <form onSubmit={handleSubmit(onSubmit)}>
             
@@ -103,6 +117,7 @@ export default function FirstPage () {
         
   
         </div>
+       
     </div>
   );
 };
