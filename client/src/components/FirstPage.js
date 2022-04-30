@@ -7,6 +7,9 @@ import FormControl from '@material-ui/core/FormControl';
 import {SocketContext} from './Socket'
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import CreateBord from './Board';
+import ReactDOM from 'react-dom';
+import { useNavigate } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     login__text:{
@@ -68,17 +71,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function FirstPage () {
+    let navigate = useNavigate();
     const socket = useContext(SocketContext);
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
-    const {message, setMessage } = useState(false)
+    const [message, setMessage] = useState(false);
     const onSubmit =  useCallback((data) => {
         console.log(data)
         socket.emit('start', {
             user: data.userName,
             white: data.white
         })
-        setMessage(true)
+       function test() {
+           setMessage(true)
+        }
+       test();
     }, []);    
     
           
@@ -88,7 +95,11 @@ export default function FirstPage () {
         useEffect(() => { 
             console.log('game start')
               socket.on ('ready', (data) => {
-                console.log('game start2')
+                  if(message === true)  {
+                    navigate("/game");
+                  }
+              
+                console.log('test')
               })
            }, [message]);
         
