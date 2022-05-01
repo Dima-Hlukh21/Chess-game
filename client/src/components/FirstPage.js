@@ -4,7 +4,13 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import {Connect, socket} from './Socket'
+import {SocketContext} from './Socket'
+import React, {useState, useContext, useCallback, useEffect} from 'react';
+import CreateBord from './Board';
+import ReactDOM from 'react-dom';
+import { useNavigate } from "react-router-dom";
+
+
 const useStyles = makeStyles((theme) => ({
     login__text:{
         color: '#FFB138',
@@ -31,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     '@global':{
         html: {
             overflow: 'scroll',
-            overflowY: 'hidden',
+            
             overflowX:'hidden',
             
              },
@@ -61,29 +67,49 @@ const useStyles = makeStyles((theme) => ({
         height:'45px',
         
         
-    }
-   
-        
+    }         
 }));
 
 export default function FirstPage () {
+    let navigate = useNavigate();
+    const socket = useContext(SocketContext);
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
-    const onSubmit = data =>
-    socket.send(data);
-    console.log('data send')
-     
-     
+    const [message, setMessage] = useState(false);
+    const onSubmit =  useCallback((data) => {
+        console.log(data)
+        socket.emit('start', {
+            user: data.userName,
+            white: data.white
+        })
+       function test() {
+           setMessage(true)
+        }
+       test();
+    }, []);    
+    
+          
+    
     
         
-        
+        useEffect(() => { 
+            console.log('game start')
+              socket.on ('ready', (data) => {
+                  if(message === true)  {
+                    navigate("/game");
+                  }
+              
+                console.log('test')
+              })
+           }, [message]);
         
           
-  
-    
-   
+
   return (
     <div className={classes.container}>
+      
+      
+
         <div className={classes.login__container}>
         <form onSubmit={handleSubmit(onSubmit)}>
             
@@ -91,10 +117,10 @@ export default function FirstPage () {
             <input {...register('userName')} className={classes.dataIn} name="userName" type="userName" placeholder="User Name" />
             <FormControl>
             <InputLabel  id="Color">Color</InputLabel>
-            <Select color="black" variant="outlined"  labelId="color"  {...register('color')}  className={classes.dataColor}>
-                
-            <MenuItem value="white">White</MenuItem>
-            <MenuItem value="black">Black</MenuItem>
+            <Select color="black" variant="outlined"  labelId="color"  {...register('white')}  className={classes.dataColor}>
+            
+            <MenuItem value="true">White</MenuItem>
+            <MenuItem value="false">Black</MenuItem>
             </Select>
             </FormControl>
             <button type="submit" className={classes.button__login}>Play</button >
@@ -102,7 +128,7 @@ export default function FirstPage () {
         
   
         </div>
-        <Connect></Connect>
+       
     </div>
   );
 };
