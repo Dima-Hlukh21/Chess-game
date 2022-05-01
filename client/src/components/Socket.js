@@ -1,16 +1,20 @@
+import React from 'react';
+import socketio from "socket.io-client";
+import { SOCKET_URL } from "./config";
 
-import { io } from "socket.io-client";
 
 
+export  function Connect () {
 
-export default function Connect () {
-const socket = io("ws://localhost:3333");
+  // send a message to the server
+  socket.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
 
-// send a message to the server
-socket.emit("hello from client", 5, "6", { 7: Uint8Array.from([8]) });
-
-// receive a message from the server
-socket.on("hello from server", (...args) => {
-  // ...
-});
+  // receive a message from the server
+  socket.on("hello from server", (...args) => {
+    // ...
+  });
 }
+
+
+export const socket = socketio.connect(SOCKET_URL);
+export const SocketContext = React.createContext();
