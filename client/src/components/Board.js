@@ -5,16 +5,17 @@ import { GameContext } from './GameContext';
 function Cell({boardCellData, cellIndex, rowIndex, children}) {
 
   let square, color, type;
-type.map((type, color)=>{
+// type.map((type, color)=>{
   
-})
+// })
   if(boardCellData) {square = boardCellData.square; color = boardCellData.color; type = boardCellData.type;}
   // type.map((type, color) => {
   //   if(type, color) {}
   
   // })
-  type= <img src="../img/Pawn B.png"></img>
+   type="../img/Pawnb.png"
   return <div style={{
+    backgroundImage: `url(${type})`,
     display: "inline-block",
     width: '75px',
     height: '75px',
