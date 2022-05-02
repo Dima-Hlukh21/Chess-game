@@ -2,7 +2,7 @@ import  GameItem  from './GameItem.js'
 
 
 
-export default  class ChessGame{
+export default  class GameManager{
     constructor() {
         this.games = [];    // Масив створених ігор
         this.users = [];    // Масив гравців
@@ -14,7 +14,7 @@ export default  class ChessGame{
 
         if (opponent){ 
             this.free = this.free.filter((item) => item.id !== opponent.id);                                              
-            const game = new GameItem(userData.id, opponent.id)                           // Створюємо об'єкт гри
+            const game = new GameItem(userData.id, opponent.id);                          // Створюємо об'єкт гри
             const id = Date.now();
             this.games[id] = game
             this.users[userData.id].game = id
@@ -26,7 +26,6 @@ export default  class ChessGame{
             console.log('User add to quiue '+ JSON.stringify( this.users[userData.id]))
             callback(false);
         }     
-
     }
 
 }
