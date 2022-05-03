@@ -1,40 +1,23 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import { GameContext } from './GameContext';
+import Cell from './Cell';
+import {SocketContext} from './Socket'
 
-
-function Cell({boardCellData, cellIndex, rowIndex, children}) {
-
-  let square, color, type;
-// type.map((type, color)=>{
+function CreateBord() {  
+  const socket = useContext(SocketContext);
   
-// })
-  if(boardCellData) {square = boardCellData.square; color = boardCellData.color; type = boardCellData.type;}
-  // type.map((type, color) => {
-  //   if(type, color) {}
-  
-  // })
-   type="../img/Pawnb.png"
-  return <div style={{
-    backgroundImage: `url(${type})`,
-    display: "inline-block",
-    width: '75px',
-    height: '75px',
-    backgroundColor: ((cellIndex  +rowIndex) % 2)? 'lightgray': 'lightyellow'
-  }}>{type} {color}</div>
-}
+  socket.on('possibleMoves', ({moves}) => {         // { moves }
+    console.log(moves)
+    document.querySelectorAll('.possible_step').forEach((el)=>{
+      console.log(321)
+      el.classList.remove('possible_step')
+    })
+    moves.map((el)=>{
+      document.querySelectorAll('.'+el.substr(-2))[0].classList.add('possible_step')
+    })
+  })
 
-function Row({boardRowData, rowIndex, children}) {
-  return <div>  
-    {boardRowData.map((value, index) => {
-      return <Cell boardCellData={value} cellIndex={index} rowIndex={rowIndex} />
-    })}  
-  </div>
-}
-
-function CreateBord() {
-
-  const { gameboard } = React.useContext(GameContext);
-
+  const { gameBoard } = React.useContext(GameContext);
   const width = 600;
   const height = 600;
   
@@ -46,12 +29,20 @@ function CreateBord() {
         height: height + 'px',
       }}>
 
-      {gameboard.map((value, index) => {
+      {gameBoard.map((value, index) => {
           return <Row boardRowData={value} rowIndex={index}/>
       })}
 
     </div>
   );
+}
+
+function Row({boardRowData, rowIndex, userId, userIsWhite, nextStep }) {
+  return <div>  
+    {boardRowData.map((value, index) => {
+      return <Cell boardCellData={value} cellIndex={index} rowIndex={rowIndex} />
+    })}  
+  </div>
 }
 
 export default CreateBord;

@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FirstPage () {
     let navigate = useNavigate();
     const socket = useContext(SocketContext);
-    const { updateGameboard } = React.useContext(GameContext);
+    const { setGameState, updateGameboard } = React.useContext(GameContext);
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
     const [message, setMessage] = useState(false);
@@ -123,12 +123,12 @@ export default function FirstPage () {
         
     useEffect(() => { 
         console.log('game start')
-        socket.on ('ready', (data) => {
-            updateGameboard(data.gameBoard)
+        socket.on ('ready', (data) => {         // {gameId, userId, gameBoard, nextStep }
+            console.log(data)
+            setGameState(data)
             if(message === true)  {
                 navigate("/game");
             }            
-            console.log('test')
         })
     }, [message]);
         
