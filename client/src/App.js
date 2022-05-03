@@ -9,15 +9,25 @@ import { GameContext } from './components/GameContext';
 
 
 function App() {
-  const [gameState, setGameState] = React.useState({gameboard: []});
+  const [gameState, setGameState] = React.useState({gameId: '', user: {}, gameBoard: [], nextStep: '' });
 
   function updateGameboard(newBoard){
     setGameState({...gameState, gameboard: newBoard})
   }
-  
+
+  function updateNextStep(nextStep){
+    setGameState({...gameState, nextStep: nextStep})
+  }
+
   const gameValue = {
-    gameboard: gameState.gameboard,
-    updateGameboard: updateGameboard
+    gameId: gameState.gameId,
+    gameBoard: gameState.gameBoard,
+    userId: gameState.user.id,
+    userIsWhite: (gameState.user.white === 'true'),
+    nextStep: gameState.nextStep,
+    updateGameboard: updateGameboard,
+    updateNextStep: updateNextStep,
+    setGameState: setGameState
   };
 
 
