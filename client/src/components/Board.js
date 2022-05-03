@@ -1,15 +1,15 @@
 import React, {useContext, useEffect} from 'react';
-import { GameContext } from './GameContext';
 import Cell from './Cell';
 import {SocketContext} from './Socket'
+import { GameStateContext, GameDispatchContext } from './GameContext';
 
 function CreateBord() {  
   const socket = useContext(SocketContext);
-  
+  const gameDispatch = useContext(GameDispatchContext);
+  const gameState = useContext(GameStateContext);
+
   socket.on('possibleMoves', ({moves}) => {         // { moves }
-    console.log(moves)
-    document.querySelectorAll('.possible_step').forEach((el)=>{
-      console.log(321)
+      document.querySelectorAll('.possible_step').forEach((el)=>{
       el.classList.remove('possible_step')
     })
     moves.map((el)=>{
@@ -17,10 +17,15 @@ function CreateBord() {
     })
   })
 
-  const { gameBoard } = React.useContext(GameContext);
+  socket.on('upDateBoard', ({gameBoard, nextStep}) => {    
+    gameDispatch({type: 'updateGameboard', data: gameBoard})
+    gameDispatch({type: 'updateNextStep', data: nextStep})
+    console.log(gameBoard, nextStep)
+  })  
+  
   const width = 600;
   const height = 600;
-  
+
   return (
     <div
       className="board"
@@ -29,18 +34,18 @@ function CreateBord() {
         height: height + 'px',
       }}>
 
-      {gameBoard.map((value, index) => {
-          return <Row boardRowData={value} rowIndex={index}/>
+      {gameState.gameBoard.map((value, index) => {
+          return <Row boardRowData={value} rowIndex={index} key={index}/>
       })}
 
     </div>
   );
 }
 
-function Row({boardRowData, rowIndex, userId, userIsWhite, nextStep }) {
+function Row({boardRowData, rowIndex }) {
   return <div>  
     {boardRowData.map((value, index) => {
-      return <Cell boardCellData={value} cellIndex={index} rowIndex={rowIndex} />
+      return <Cell boardCellData={value} cellIndex={index} rowIndex={rowIndex} key={index}/>
     })}  
   </div>
 }

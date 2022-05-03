@@ -8,6 +8,7 @@ import {SocketContext} from './Socket'
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { GameContext } from './GameContext';
+import { GameDispatchContext } from './GameContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FirstPage () {
     let navigate = useNavigate();
     const socket = useContext(SocketContext);
-    const { setGameState, updateGameboard } = React.useContext(GameContext);
+    const gameDispatch = React.useContext(GameDispatchContext);
     const classes = useStyles();
     const { register, handleSubmit, } = useForm();
     const [message, setMessage] = useState(false);
@@ -124,8 +125,8 @@ export default function FirstPage () {
     useEffect(() => { 
         console.log('game start')
         socket.on ('ready', (data) => {         // {gameId, userId, gameBoard, nextStep }
-            console.log(data)
-            setGameState(data)
+            console.log(gameDispatch)
+            gameDispatch({type: 'fullUpdate', data})
             if(message === true)  {
                 navigate("/game");
             }            
