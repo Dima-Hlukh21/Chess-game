@@ -39,10 +39,10 @@ export default  class GameItem{
             else {square = letters[cellIndex]+numb[rowIndex]; color = 'none'; type = 'empty';}
 
             this.possibleMovesW.map((element, index)=>{
-                if(element == square || color == 'w') visibleForW = true;
+                if(element.substr(-2) == square || color == 'w') visibleForW = true;
             })
             this.possibleMovesB.map((element, index)=>{
-                if(element == square || color == 'b') visibleForB = true;
+                if(element.substr(-2) == square || color == 'b') visibleForB = true;
             })
           
             return { square, type, color, visibleForW, visibleForB }
@@ -55,23 +55,38 @@ export default  class GameItem{
         const possibleMovesWnotFiltred = []
         const possibleMovesBnotFiltred = []
 
-        this.gameModule.board().map((item,index) => {
-            item.map((cell,index) => {
+        this.gameModule.board().map( item => {
+            item.map( cell => {
                 if(cell == null) return;
+                console.log(cell)
                 if (cell.color == "w"){
-                    possibleMovesWnotFiltred.push(...this.gameModule.moves({scuare: cell.square}) )
-                } else{
-                    possibleMovesBnotFiltred.push(...this.gameModule.moves({scuare: cell.square}) ) 
+                    if(this.gameModule.getTurn() == 'w'){
+                        possibleMovesWnotFiltred.push(...this.gameModule.moves({square: cell.square}) )
+                    }else{
+                        this.gameModule.changeTurn();
+                        possibleMovesWnotFiltred.push(...this.gameModule.moves({square: cell.square}) )
+                        this.gameModule.changeTurn();
+                    }                    
+                } else {
+                    if(this.gameModule.getTurn() == 'b'){
+                        possibleMovesBnotFiltred.push(...this.gameModule.moves({square: cell.square}) ) 
+                    }else{
+                        this.gameModule.changeTurn();
+                        possibleMovesBnotFiltred.push(...this.gameModule.moves({square: cell.square}) ) 
+                        this.gameModule.changeTurn();
+                    }                    
                 };
             });
         } );
+        console.log(possibleMovesWnotFiltred)     
+        console.log(possibleMovesBnotFiltred) 
 
         this.possibleMovesW = possibleMovesWnotFiltred.filter((element, index) => {
             return possibleMovesWnotFiltred.indexOf(element) === index;
         });
         this.possibleMovesB = possibleMovesBnotFiltred.filter((element, index) => {
             return possibleMovesBnotFiltred.indexOf(element) === index;
-        });        
+        });   
     };
     getPossibleMoves(square){
         return this.gameModule.moves({square: square})

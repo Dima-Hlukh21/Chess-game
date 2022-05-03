@@ -20,14 +20,19 @@ export default function (socket){ console.log('User connected');
     })
     socket.on('step', (data) => {                           // { gameId,  from,  to }
         const gameStep = Game.games[data.gameId].step(data.from, data.to);
-        if  (gameStep != null) {
+        if  (gameStep != null) {            
+            const newGameBoard = Game.games[data.gameId].getBoard();
+            const userId = Game.games[data.gameId].getUserId();
+            const opponentId = Game.games[data.gameId].getOpponentrId();
+            console.log( Game.games[data.gameId].boardToConsole())
+
             if (gameStep.captured == 'k' || gameStep.captured == 'K'){
-                io.to(Game.games[data.gameId].getUserId()).emit('gameOver', {gameBoard: Game.games[data.gameId].getBoard()});
-                io.to(Game.games[data.gameId].getOpponentrId()).emit('gameOver', {gameBoard: Game.games[data.gameId].getBoard()});
+                io.to(userId).emit('gameOver', {gameBoard: newGameBoard});
+                io.to(opponentId).emit('gameOver', {gameBoard: newGameBoard});
                 return;
             };
-            io.to(Game.games[data.gameId].getUserId()).emit('upDateBoard', {gameBoard: Game.games[data.gameId].getBoard(), nextStep: Game.games[data.gameId].nextStep});
-            io.to(Game.games[data.gameId].getOpponentrId()).emit('upDateBoard', {gameBoard: Game.games[data.gameId].getBoard(), nextStep: Game.games[data.gameId].nextStep});
+            io.to(userId).emit('upDateBoard', {gameBoard: newGameBoard, nextStep: Game.games[data.gameId].nextStep});
+            io.to(opponentId).emit('upDateBoard', {gameBoard: newGameBoard, nextStep: Game.games[data.gameId].nextStep});
         }
     })
     socket.on('possibleMoves', (data) => {                  // { gameId, userId, square }
