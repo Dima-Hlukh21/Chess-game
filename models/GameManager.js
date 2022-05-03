@@ -14,7 +14,9 @@ export default  class GameManager{
 
         if (opponent){ 
             this.free = this.free.filter((item) => item.id !== opponent.id);                                              
-            const game = new GameItem(userData.id, opponent.id);                          // Створюємо об'єкт гри
+            const game = new GameItem(userData, opponent);                          // Створюємо об'єкт гри
+            //console.log(game);
+            //console.log(game.getBoard())
             const id = Date.now();
             this.games[id] = game
             this.users[userData.id].game = id
@@ -25,7 +27,6 @@ export default  class GameManager{
             this.free.push({id: userData.id, white: userData.white });
             console.log('User add to quiue '+ JSON.stringify( this.users[userData.id]))
             callback(false);
-        }     
-    }
-
-}
+        };     
+    };
+};

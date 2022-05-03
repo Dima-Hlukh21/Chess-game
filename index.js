@@ -28,8 +28,8 @@ async function startApp() {
         });
     } catch (e) {
         console.log(e);
-    }
-}
+    };
+};
 startApp();
 
 export {io};

@@ -7,29 +7,31 @@ const Game = new GameManager()  // Головний об'єкт гри
 export default function (socket){ console.log('User connected'); 
     socket.on('start', (data) => {                          // { user, white }      
         if (Game.users[socket.id] !== undefined) return;    // Перевірка що гравець ще не в грі
-        Game.start({ id: socket.id.toString(), ...data }, (start, gameId, opponent, gameBoard) => {     
+        Game.start({ id: socket.id.toString(), ...data }, (start, gameId, opponentId, gameBoard) => {     
             if (start) {                                    // Перевірка початку гри
                 socket.join(gameId);                         // Створення кімнати гри для гравців                      
-                io.in(opponent).socketsJoin(gameId);
-                socket.emit('ready', {gameId, gameBoard});               // Повідомлення гравців про початок
-                io.to(opponent).emit('ready', {gameId, gameBoard});
-                console.log(Game.games[gameId].visibilityBoard());
-                console.log(Game.games[gameId].boardToConsole());
+                io.in(opponentId).socketsJoin(gameId);
+                socket.emit('ready', {gameId, user: Game.users[socket.id.toString()], gameBoard, nextStep: Game.games[gameId].nextStep});               // Повідомлення гравців про початок
+                io.to(opponentId).emit('ready', {gameId, user:  Game.users[opponentId], gameBoard, nextStep: Game.games[gameId].nextStep});
             } else {
                 io.to(socket.id).emit('wait');
             }
         }) 
     })
     socket.on('step', (data) => {                           // { gameId,  from,  to }
-    const gameStep = Game.games[data.gameId].step(data.from, data.to);
-    if  (gameStep != null) {
-        if (gameStep.captured == 'k' || gameStep.captured == 'K'){
-            io.to(Game.games[data.gameId].getUserId()).emit('gameOver', {gameBoard});
-            io.to(Game.games[data.gameId].getOpponentrId()).emit('gameOver', {gameBoard});
-            return;
-        };
-            io.to(Game.games[data.gameId].getUserId()).emit('upDateBoard', {gameBoard});
-            io.to(Game.games[data.gameId].getOpponentrId()).emit('upDateBoard', {gameBoard});
+        const gameStep = Game.games[data.gameId].step(data.from, data.to);
+        if  (gameStep != null) {
+            if (gameStep.captured == 'k' || gameStep.captured == 'K'){
+                io.to(Game.games[data.gameId].getUserId()).emit('gameOver', {gameBoard: Game.games[data.gameId].getBoard()});
+                io.to(Game.games[data.gameId].getOpponentrId()).emit('gameOver', {gameBoard: Game.games[data.gameId].getBoard()});
+                return;
+            };
+            io.to(Game.games[data.gameId].getUserId()).emit('upDateBoard', {gameBoard: Game.games[data.gameId].getBoard(), nextStep: Game.games[data.gameId].nextStep});
+            io.to(Game.games[data.gameId].getOpponentrId()).emit('upDateBoard', {gameBoard: Game.games[data.gameId].getBoard(), nextStep: Game.games[data.gameId].nextStep});
         }
+    })
+    socket.on('possibleMoves', (data) => {                  // { gameId, userId, square }
+        const moves = Game.games[data.gameId].getPossibleMoves(data.square);
+        io.to(data.userId).emit('possibleMoves', {moves})
     })
 }
