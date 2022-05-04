@@ -2,8 +2,43 @@ import React, {useContext, useEffect} from 'react';
 import Cell from './Cell';
 import {SocketContext} from './Socket'
 import { GameStateContext, GameDispatchContext } from './GameContext';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+
+const useStyles = makeStyles((theme) => ({
+  '@global':{
+    html: {
+        overflow: 'scroll',
+        
+        overflowX:'hidden',
+        
+         },
+body :{
+    width: '100vh',
+    height: '100vh',
+    background: 'url(https://cdn.wallpapersafari.com/79/26/u6sDao.jpg) no-repeat center top fixed',
+    webkitBackgroundSize: 'cover',
+    mozBackgroundSize: 'cover',
+    oBackgroundSize: 'cover',
+    backgroundSize: 'cover',
+},
+
+},
+Hufflepuff:{
+  width: '200px',
+  height: '200px',
+  position: 'absolute',
+  right: '0px',
+  bottom: '0px',
+},
+
+
+
+}));
 
 function CreateBord() {  
+  const classes = useStyles();
   const socket = useContext(SocketContext);
   const gameDispatch = useContext(GameDispatchContext);
   const gameState = useContext(GameStateContext);
@@ -43,10 +78,14 @@ function CreateBord() {
 }
 
 function Row({boardRowData, rowIndex }) {
-  return <div>  
+  const classes = useStyles();
+  return <div className={classes.container}>
+  <div>  
     {boardRowData.map((value, index) => {
       return <Cell boardCellData={value} cellIndex={index} rowIndex={rowIndex} key={index}/>
     })}  
+  </div>
+  <img className={classes.Hufflepuff} src = 'https://www.nicepng.com/png/full/43-439104_hufflepuff-crest-harry-potter-banner-harry-potter-hufflepuff.png'></img>
   </div>
 }
 

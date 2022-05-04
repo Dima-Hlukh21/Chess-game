@@ -36,7 +36,7 @@ export default function Cell({boardCellData, cellIndex, rowIndex }) {
             display: "inline-block",
             width: '75px',
             height: '75px',
-            backgroundColor: ((cellIndex  +rowIndex) % 2)? 'lightgray': 'lightyellow'
+            backgroundColor: ((cellIndex  +rowIndex) % 2)? 'black': 'lightyellow'
         }}
         data-square={square}
         onClick={backlight} 
