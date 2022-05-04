@@ -114,7 +114,7 @@ export default function FirstPage () {
         console.log(data)
         socket.emit('start', {
             user: data.userName,
-            white: data.white
+            white: (data.white === 'true')
         })
        function test() {
            setMessage(true)

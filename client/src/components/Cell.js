@@ -6,7 +6,7 @@ export default function Cell({boardCellData, cellIndex, rowIndex }) {
     const socket = useContext(SocketContext);
     const { gameId, user, nextStep } = useContext(GameStateContext);
     const userId = user.id;
-    const userIsWhite = (user.white === 'true');
+    const userIsWhite = user.white;
 
     let square = boardCellData.square; 
     let color = boardCellData.color;
