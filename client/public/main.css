@@ -1,0 +1,98 @@
+.figure_type_nonenone{
+    background-image: url(./img/noise_cubemap_face.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_nonew{
+    background-image: url(./img/noise_cubemap_face.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_noneb{
+    background-image: url(./img/noise_cubemap_face.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_kw {    
+    background-image: url(./img/Kingw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_kb {    
+    background-image: url(./img/Kingb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_bw {    
+    background-image: url(./img/Bishopw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_bb {    
+    background-image: url(./img/Bishopb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_nw {    
+    background-image: url(./img/Knightw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_nb {    
+    background-image: url(./img/Knightb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_rw {    
+    background-image: url(./img/Rookw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_rb {    
+    background-image: url(./img/Rookb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_pw {    
+    background-image: url(./img/Pawnw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_pb {    
+    background-image: url(./img/Pawnb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_qw {    
+    background-image: url(./img/Queenw.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.figure_type_qb {    
+    background-image: url(./img/Queenb.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.active {
+    border: 3px solid red;
+    box-sizing: border-box;
+}
+.possible_step{
+    border: 3px solid blue;
+    box-sizing: border-box;
+}

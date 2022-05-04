@@ -301,6 +301,13 @@ export const Chess = function (fen) {
   var header = {}
   var comments = {}
 
+  function changeTurn(){
+    turn = (turn == WHITE) ? BLACK : WHITE;
+  }
+  function getTurn(){
+    return turn;
+  }
+
   /* if the user passes in a fen string, load it, else default to
    * starting position
    */
@@ -1343,6 +1350,12 @@ export const Chess = function (fen) {
     /***************************************************************************
      * PUBLIC API
      **************************************************************************/
+    changeTurn: function () {
+      return changeTurn()
+    },
+    getTurn: function () {
+      return getTurn()
+    },
     load: function (fen) {
       return load(fen)
     },

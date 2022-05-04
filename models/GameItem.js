@@ -5,50 +5,110 @@ export default  class GameItem{
     constructor(user, opponent){
         this.gameModule = new Chess();
         this.user = user;   //Гравець 1
-        this.opponent = opponent;   //Гравець 2
-        this.turn = 10; // 10-білі, 20-чорні
-    }
+        this.opponent = opponent;   //Гравець 2     
+        this.possibleMovesW = [];
+        this.possibleMovesB = [];
+        this.nextStep = user.white == true ? user.id : opponent.id;   
+    };
+
     getBoard(){
-        return this.gameModule.board()
-    } 
+        const gameboard = this.gameModule.board() 
+
+        this.visibilityBoard()
+
+        function createBord() {      
+            return ( 
+                gameboard.map((value, index) => {
+                    return row(value, index)
+                })          
+            )
+        }
+        function row(boardRowData, rowIndex) {                  //Розбор доски на ячейки
+            return boardRowData.map((value, index) => {
+                return cell(value, index, rowIndex )
+            })  
+        }
+
+        const cell = (boardCellData, cellIndex, rowIndex) => {
+
+            let letters = 'abcdefgh'
+            let numb = '87654321'
+            let square, color, type, visibleForW = false, visibleForB = false;
+          
+            if(boardCellData) { square = boardCellData.square; color = boardCellData.color; type = boardCellData.type; }
+            else {square = letters[cellIndex]+numb[rowIndex]; color = 'none'; type = 'empty';}
+
+            this.possibleMovesW.map((element, index)=>{
+                if(element.substr(-2) == square || color == 'w') visibleForW = true;
+            })
+            this.possibleMovesB.map((element, index)=>{
+                if(element.substr(-2) == square || color == 'b') visibleForB = true;
+            })
+          
+            return { square, type, color, visibleForW, visibleForB }
+        }     
+          
+        return createBord()
+    };
+
     visibilityBoard(){
-        const possibleMovesW = [];
-        const possibleMovesB = [];
-        this.getBoard().map((item,index) => {
-            item.map((cell,index) => {
+        const possibleMovesWnotFiltred = []
+        const possibleMovesBnotFiltred = []
+
+        this.gameModule.board().map( item => {
+            item.map( cell => {
                 if(cell == null) return;
-                if (cell.color = "w"){
-                    possibleMovesW.push(...this.gameModule.moves({scuare: cell.square}) )
-                } else{
-                    possibleMovesB.push(...this.gameModule.moves({scuare: cell.square}) ) 
+                console.log(cell)
+                if (cell.color == "w"){
+                    if(this.gameModule.getTurn() == 'w'){
+                        possibleMovesWnotFiltred.push(...this.gameModule.moves({square: cell.square}) )
+                    }else{
+                        this.gameModule.changeTurn();
+                        possibleMovesWnotFiltred.push(...this.gameModule.moves({square: cell.square}) )
+                        this.gameModule.changeTurn();
+                    }                    
+                } else {
+                    if(this.gameModule.getTurn() == 'b'){
+                        possibleMovesBnotFiltred.push(...this.gameModule.moves({square: cell.square}) ) 
+                    }else{
+                        this.gameModule.changeTurn();
+                        possibleMovesBnotFiltred.push(...this.gameModule.moves({square: cell.square}) ) 
+                        this.gameModule.changeTurn();
+                    }                    
                 };
             });
-        } )
-        const possibleMovesWfiltred = possibleMovesW.filter((element, index) => {
-            return possibleMovesW.indexOf(element) === index;
+        } );
+        //console.log(possibleMovesWnotFiltred)     
+        //console.log(possibleMovesBnotFiltred) 
+
+        this.possibleMovesW = possibleMovesWnotFiltred.filter((element, index) => {
+            return possibleMovesWnotFiltred.indexOf(element) === index;
         });
-        const possibleMovesBfiltred = possibleMovesB.filter((element, index) => {
-            return possibleMovesB.indexOf(element) === index;
-        });
-        return possibleMovesWfiltred;
-    }
+        this.possibleMovesB = possibleMovesBnotFiltred.filter((element, index) => {
+            return possibleMovesBnotFiltred.indexOf(element) === index;
+        });   
+    };
+    getPossibleMoves(square){  
+        return this.gameModule.moves({square: square})
+    };    
+    step(from, to){
+        this.nextStep = (this.nextStep == this.opponent.id) ? this.user.id : this.opponent.id;          // зміна черги ходу
+        return this.gameModule.move({from,to});
+    };
+    getUserId(){
+        return this.user.id
+     };
+    getOpponentrId(){
+        return this.opponent.id
+    };
     boardToConsole(){
         return this.gameModule.ascii()
-    }
-    step(from, to){
-        return this.gameModule.move({from,to})
-    }
-     getUserId(){
-         return this.user
-     }
-     getOpponentrId(){
-        return this.opponent
-    }
+    };
     getTurn(){
 
-    }
+    };
     checkWinner(){
         
-    }
+    };
 
-}
+};
