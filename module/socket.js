@@ -35,7 +35,7 @@ export default function (socket){ console.log('User connected');
             io.to(opponentId).emit('upDateBoard', {gameBoard: newGameBoard, nextStep: Game.games[data.gameId].nextStep});
         }
     })
-    socket.on('possibleMoves', (data) => {                  // { gameId, userId, square }
+    socket.on('possibleMoves', (data) => {                  // { gameId, userId, square }, запит ймовірних ходів
         const moves = Game.games[data.gameId].getPossibleMoves(data.square);
         io.to(data.userId).emit('possibleMoves', {moves})
     })

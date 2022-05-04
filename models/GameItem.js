@@ -23,7 +23,7 @@ export default  class GameItem{
                 })          
             )
         }
-        function row(boardRowData, rowIndex) {
+        function row(boardRowData, rowIndex) {                  //Розбор доски на ячейки
             return boardRowData.map((value, index) => {
                 return cell(value, index, rowIndex )
             })  
@@ -78,8 +78,8 @@ export default  class GameItem{
                 };
             });
         } );
-        console.log(possibleMovesWnotFiltred)     
-        console.log(possibleMovesBnotFiltred) 
+        //console.log(possibleMovesWnotFiltred)     
+        //console.log(possibleMovesBnotFiltred) 
 
         this.possibleMovesW = possibleMovesWnotFiltred.filter((element, index) => {
             return possibleMovesWnotFiltred.indexOf(element) === index;
@@ -88,11 +88,11 @@ export default  class GameItem{
             return possibleMovesBnotFiltred.indexOf(element) === index;
         });   
     };
-    getPossibleMoves(square){
+    getPossibleMoves(square){  
         return this.gameModule.moves({square: square})
     };    
     step(from, to){
-        this.nextStep = (this.nextStep == this.opponent.id) ? this.user.id : this.opponent.id;
+        this.nextStep = (this.nextStep == this.opponent.id) ? this.user.id : this.opponent.id;          // зміна черги ходу
         return this.gameModule.move({from,to});
     };
     getUserId(){
